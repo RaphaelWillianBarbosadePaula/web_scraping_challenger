@@ -1,0 +1,36 @@
+# --- Sistema Operacional ---
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+._*
+
+# --- IDEs e Editores ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- Docker ---
+# Ignorar arquivos de override local (usados para configurações pessoais que não vão pro git)
+docker-compose.override.yml
+
+# Caso você decida mapear os dados do banco para uma pasta local no futuro (segurança)
+postgres_data/
+redis_data/
+mysql_data/
+tmp/
+
+# --- Rails & Ruby (Segurança Extra na Raiz) ---
+# Embora cada app tenha seu gitignore, é bom garantir que chaves nunca subam
+config/master.key
+config/credentials.yml.enc
+.env
+.env*.local
+
+# --- Logs e Arquivos Temporários ---
+log/
+coverage/
