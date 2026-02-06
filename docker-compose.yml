@@ -1,0 +1,86 @@
+services:
+  # --- Infraestrutura ---
+  db:
+    image: postgres:16-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+
+  # --- Microsserviços ---
+
+  # 1. Autenticação (Porta 3001)
+  auth-service:
+    build: ./auth-service
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3001 -b '0.0.0.0'"
+    volumes:
+      - ./auth-service:/rails
+    ports:
+      - "3001:3001"
+    environment:
+      DB_HOST: db
+      DB_PASSWORD: password
+    depends_on:
+      - db
+
+  # 2. Notificações (Porta 3002)
+  notification-service:
+    build: ./notification-service
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3002 -b '0.0.0.0'"
+    volumes:
+      - ./notification-service:/rails
+    ports:
+      - "3002:3002"
+    environment:
+      DB_HOST: db
+      DB_PASSWORD: password
+    depends_on:
+      - db
+
+  # 3. Web Scraping Manager (Frontend/Backend - Porta 3000)
+  webscraping-manager:
+    build: ./webscraping-manager
+    command: bash -c "rm -f tmp/pids/server.pid && ./bin/rails server -b 0.0.0.0"
+    volumes:
+      - ./webscraping-manager:/rails
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: db
+      DB_PASSWORD: password
+      REDIS_URL: redis://redis:6379/0
+      # URLs dos outros serviços para comunicação interna
+      AUTH_SERVICE_URL: http://auth-service:3001
+      NOTIFICATION_SERVICE_URL: http://notification-service:3002
+    depends_on:
+      - db
+      - redis
+
+  # 4. Microsserviço de Processamento (Sidekiq Worker)
+  scraping-worker:
+    build: ./webscraping-manager
+    command: bundle exec sidekiq
+    volumes:
+      - ./webscraping-manager:/rails
+    environment:
+      DB_HOST: db
+      DB_PASSWORD: password
+      REDIS_URL: redis://redis:6379/0
+      NOTIFICATION_SERVICE_URL: http://notification-service:3002
+    depends_on:
+      - db
+      - redis
+      - webscraping-manager
+
+volumes:
+  postgres_data:
+  redis_data:
