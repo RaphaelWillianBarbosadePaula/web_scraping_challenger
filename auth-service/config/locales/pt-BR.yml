@@ -1,0 +1,52 @@
+# config/locales/pt-BR.yml
+pt-BR:
+  activerecord:
+    attributes:
+      user:
+        email: "E-mail"
+        password: "Senha"
+        nickname: "Nome de Usuário"
+        password_confirmation: "Confirmação de senha"
+
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              blank: "não pode ficar em branco"
+              taken: "já está em uso"
+              invalid: "não é válido"
+              too_long:
+                one: "é muito longo (máximo %{count} caractere)"
+                other: "é muito longo (máximo %{count} caracteres)"
+            nickname:
+              blank: "não pode ficar em branco"
+              taken: "já está em uso"
+              too_long:
+                one: "é muito longo (máximo %{count} caractere)"
+                other: "é muito longo (máximo %{count} caracteres)"
+              format: "permite apenas letras, números e underline"
+            password:
+              blank: "não pode ficar em branco"
+              too_short:
+                one: "é muito curta (mínimo %{count} caractere)"
+                other: "é muito curta (mínimo %{count} caracteres)"
+              too_long:
+                one: "é muito longa (máximo %{count} caractere)"
+                other: "é muito longa (máximo %{count} caracteres)"
+            password_confirmation:
+              confirmation: "não é igual a Senha"
+
+      # Mensagens padrão para todos os models (fallback)
+      messages:
+        blank: "não pode ficar em branco"
+        taken: "já está em uso"
+        invalid: "não é válido"
+        confirmation: "não é igual a %{attribute}"
+        too_short:
+          one: "é muito curto (mínimo %{count} caractere)"
+          other: "é muito curto (mínimo %{count} caracteres)"
+        too_long:
+          one: "é muito longo (máximo %{count} caractere)"
+          other: "é muito longo (máximo %{count} caracteres)"
+        format: "não é válido"
