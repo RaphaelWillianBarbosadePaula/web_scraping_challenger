@@ -1,0 +1,36 @@
+<div class="home-container">
+  <div class="home-card">
+    <h1 style="font-size: 2.5rem; margin-bottom: 10px;">🚗</h1>
+    <h1 style="margin-top: 0; color: #333;">Webscraping Manager</h1>
+    <p style="color: #666; margin-bottom: 30px;">Sistema inteligente de coleta e análise de preços de veículos.</p>
+
+    <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 30px;">
+
+    <% if session[:jwt_token].present? %>
+      <div style="background-color: #f0f9ff; padding: 25px; border-radius: 10px; border: 1px solid #bae6fd;">
+        <p style="color: #0369a1; font-weight: 600; margin-top: 0;">
+          <span style="margin-right: 5px;">✅</span> Sessão Ativa
+        </p>
+
+        <%= link_to "Gerenciar Tarefas", "#", class: "btn btn-primary", style: "width: 100%; box-sizing: border-box;" %>
+
+        <div style="margin-top: 15px;">
+          <%= button_to "Sair do Sistema", logout_path,
+                        method: :delete,
+                        class: "btn btn-logout",
+                        style: "width: 100%; background: none; color: #dc3545; border: 1px solid #dc3545;",
+                        data: { turbo: false } %>
+        </div>
+      </div>
+
+    <% else %>
+      <div style="display: flex; flex-direction: column; gap: 15px;">
+        <%= link_to "Entrar na Conta", login_path, class: "btn btn-outline" %>
+        <%= link_to "Criar Nova Conta", register_path, class: "btn btn-primary" %>
+      </div>
+      <p style="margin-top: 20px; font-size: 0.85rem; color: #999;">
+        Cadastre-se ou faça login para acessar as demais funcionalidades do sistema.
+      </p>
+    <% end %>
+  </div>
+</div>
