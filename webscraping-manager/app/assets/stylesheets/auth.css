@@ -1,0 +1,134 @@
+/* app/assets/stylesheets/auth.css */
+
+/* Reset básico para garantir que não haja bordas brancas indesejadas */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Mudança 1: Forçar largura e altura totais */
+  width: 100vw;       /* 100% da largura da viewport (tela) */
+  min-height: 100vh;  /* 100% da altura da viewport */
+  background-color: #f8f9fa;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* Garante que o container fique sobreposto a margens padrões do layout */
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.auth-card {
+  background-color: #ffffff;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08); /* Sombra um pouco mais forte para destaque */
+  width: 100%;
+  max-width: 420px; /* Aumentei levemente para dar respiro */
+
+  /* Garante que o card não encoste nas bordas em celulares */
+  margin: 20px;
+  box-sizing: border-box;
+}
+
+.auth-header {
+  display: flex;
+  justify-content: space-between; /* Mantém um na esquerda, outro na direita */
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap; /* Permite quebrem linha se a tela for muito pequena */
+  gap: 10px; /* Mudança 2: Espaço mínimo para não grudarem */
+}
+
+.auth-header h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  color: #333;
+  font-weight: 700;
+}
+
+.auth-link {
+  text-decoration: none;
+  color: #007bff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap; /* Impede que o texto do link quebre em duas linhas */
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #495057;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.85rem; /* Um pouco mais alto para ficar moderno */
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  transition: all 0.2s;
+  background-color: #fff;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #80bdff;
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.15);
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #0d6efd; /* Azul mais vibrante do Bootstrap 5 */
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 0.5rem;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+}
+
+.alert-error {
+  background-color: #fff5f5;
+  color: #c53030;
+  border: 1px solid #feb2b2;
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  text-align: center; /* Centraliza o texto de erro */
+}
+
+.alert-notice {
+  background-color: #eafaea;
+  color: #5ac530;
+  border: 1px solid #c8feb2;
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  text-align: center; /* Centraliza o texto de erro */
+}
