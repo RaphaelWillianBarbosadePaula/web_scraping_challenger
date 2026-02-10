@@ -4,8 +4,8 @@ class Notification < ApplicationRecord
   validates :event_type, presence: true
 
   enum :event_type, {
-    task_created: 0,
-    task_completed: 1,
-    task_failed: 2
+    task_created: "task_created",
+    task_completed: "task_completed",
+    task_failed: "task_failed"
   }
 end
