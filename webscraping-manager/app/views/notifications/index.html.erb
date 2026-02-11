@@ -1,0 +1,82 @@
+<div class="home-container layout-dashboard">
+  <div class="home-card card-wide">
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h2 style="margin: 0; color: #333;">Central de Notificações</h2>
+      <%= link_to "← Voltar para Home", root_path, class: "btn btn-outline", style: "padding: 8px 16px; font-size: 0.9rem;" %>
+    </div>
+
+    <% if @notifications.any? %>
+      <div style="overflow-x: auto;">
+        <table class="table-custom">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Evento</th>
+              <th>Tarefa Relacionada</th>
+              <th>Detalhes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @notifications.each do |notification| %>
+              <tr style="transition: background 0.2s;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
+
+                <td style="color: #666; font-size: 0.9rem; white-space: nowrap;">
+                  <%= Time.parse(notification['created_at']).strftime("%d/%m/%Y %H:%M") rescue notification['created_at'] %>
+                </td>
+
+                <td>
+                   <%
+                    badge_class = case notification['event_type']
+                      when 'task_created' then { bg: '#cff4fc', color: '#055160' }
+                      when 'task_completed' then { bg: '#d1e7dd', color: '#0f5132' }
+                      when 'task_failed' then { bg: '#f8d7da', color: '#721c24' }
+                      else { bg: '#eee', color: '#333' }
+                    end
+                  %>
+                  <span class="badge" style="background-color: <%= badge_class[:bg] %>; color: <%= badge_class[:color] %>;">
+                    <%= (notification['event_type'] || '').humanize %>
+                  </span>
+                </td>
+
+                <td>
+                  <% if notification['task_id'] %>
+                    <%= link_to "Ver Tarefa ##{notification['task_id']}", task_path(notification['task_id']), style: "color: #0d6efd; text-decoration: none; font-weight: 500;" %>
+                  <% else %>
+                    <span style="color: #999;">-</span>
+                  <% end %>
+                </td>
+
+                <td style="font-size: 0.85rem; color: #555;">
+                  <% if notification['data'].present? && notification['data'].is_a?(Hash) %>
+                     <% if notification['data']['url'] %>
+                        <div style="margin-bottom: 2px;">
+                          <span style="color: #999;">URL:</span>
+                          <%= link_to "Abrir Link Externo ↗", notification['data']['url'], target: "_blank", rel: "noreferrer noopener", style: "color: #666; text-decoration: underline;" %>
+                        </div>
+                     <% end %>
+
+                     <% if notification['data']['error'] %>
+                        <div style="color: #dc3545;">
+                          <strong>Erro:</strong> <%= notification['data']['error'] %>
+                        </div>
+                     <% end %>
+                  <% else %>
+                    -
+                  <% end %>
+                </td>
+
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div style="text-align: center; padding: 60px 20px; color: #999;">
+        <h3 style="font-size: 2rem; margin-bottom: 10px;">🔕</h3>
+        <p>Você não possui notificações recentes.</p>
+      </div>
+    <% end %>
+
+  </div>
+</div>
