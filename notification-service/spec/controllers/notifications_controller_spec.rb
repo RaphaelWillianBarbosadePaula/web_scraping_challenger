@@ -7,12 +7,12 @@ RSpec.describe NotificationsController, type: :controller do
 
       it 'creates a new Notification' do
         expect {
-          post :create, params: valid_attributes
+          post :create, params: { notification: valid_attributes }
         }.to change(Notification, :count).by(1)
       end
 
       it 'renders a JSON response with a new notification' do
-        post :create, params: valid_attributes
+        post :create, params: { notification: valid_attributes }
         expect(response).to have_http_status(:created)
         expect(response.content_type).to eq('application/json; charset=utf-8')
       end
@@ -23,12 +23,12 @@ RSpec.describe NotificationsController, type: :controller do
 
       it 'does not create a new Notification' do
         expect {
-          post :create, params: invalid_attributes
+          post :create, params: { notification: invalid_attributes }
         }.not_to change(Notification, :count)
       end
 
       it 'renders a JSON response with errors for the new notification' do
-        post :create, params: invalid_attributes
+        post :create, params: { notification: invalid_attributes  }
         expect(response).to have_http_status(:unprocessable_content)
         expect(response.content_type).to eq('application/json; charset=utf-8')
       end
