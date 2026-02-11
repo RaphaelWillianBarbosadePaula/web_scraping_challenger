@@ -25,9 +25,11 @@ RSpec.describe TasksController, type: :controller do
   end
 
   describe 'GET #show' do
-    it 'returns a success response' do
+    it 'returns a success response and fetches notifications' do
+      allow(NotificationClient).to receive(:get_by_task).with(task.id).and_return([])
       get :show, params: { id: task.id }
       expect(response).to be_successful
+      expect(assigns(:notifications)).to eq([])
     end
   end
 
@@ -36,7 +38,6 @@ RSpec.describe TasksController, type: :controller do
       it 'creates a new Task' do
         allow(Task).to receive(:new).and_return(task)
         allow(task).to receive(:save).and_return(true)
-
         allow(task).to receive(:user_id=).with(user.id)
 
         allow(NotificationClient).to receive(:notify).with(task.id, user.id, 'task_created', { url: task.url })
@@ -65,8 +66,6 @@ RSpec.describe TasksController, type: :controller do
       it 'updates the requested task' do
         allow(task).to receive(:update).and_return(true)
 
-        allow(NotificationClient).to receive(:notify).with(task.id, user.id, 'task_updated', { url: task.url })
-
         put :update, params: { id: task.id, task: new_attributes }
         expect(response).to redirect_to(tasks_path)
       end
@@ -85,8 +84,6 @@ RSpec.describe TasksController, type: :controller do
   describe 'DELETE #destroy' do
     it 'destroys the requested task' do
       allow(task).to receive(:destroy).and_return(true)
-
-      allow(NotificationClient).to receive(:notify).with(task.id, user.id, 'task_deleted', { url: task.url })
 
       delete :destroy, params: { id: task.id }
 

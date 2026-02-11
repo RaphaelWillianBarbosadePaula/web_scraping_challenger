@@ -25,6 +25,7 @@ class TasksController < ApplicationController
 
   def show
     @task
+    @notifications = NotificationClient.get_by_task(@task.id)
   end
 
   def edit
