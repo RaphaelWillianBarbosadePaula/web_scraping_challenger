@@ -1,0 +1,120 @@
+<div class="home-container">
+  <div class="home-card card-wide">
+
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px;">
+      <h2 style="margin: 0; color: #333;">Tarefa #<%= @task.id %></h2>
+      <%= link_to "← Voltar", tasks_path, class: "link-muted" %>
+    </div>
+
+    <div class="grid-2-col">
+      <div>
+        <span class="text-label">Título</span>
+        <p class="text-value"><%= @task.title %></p>
+      </div>
+
+      <div>
+        <span class="text-label">Status Atual</span>
+        <div style="margin-top: 5px;">
+          <span class="badge" style="
+            background-color: <%= @task.pending? ? '#fff3cd' : (@task.concluded? ? '#d1e7dd' : '#f8d7da') %>;
+            color: <%= @task.pending? ? '#856404' : (@task.concluded? ? '#0f5132' : '#721c24') %>;">
+            <%= @task.status.humanize.upcase %>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 30px;">
+      <span class="text-label">URL do Anúncio</span>
+      <div style="background: #f9f9f9; padding: 10px; border-radius: 4px; border: 1px solid #eee; margin-top: 5px; word-break: break-all;">
+        <a href="<%= @task.url %>" target="_blank" rel="noreferrer noopener" style="color: #0d6efd; text-decoration: none;"><%= @task.url %> 🔗</a>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 30px;">
+      <span class="text-label">Dados Coletados (Scraping)</span>
+
+      <% if @task.result_data.present? %>
+        <div class="code-block">
+          <pre style="margin: 0;"><%= JSON.pretty_generate(@task.result_data) rescue @task.result_data %></pre>
+        </div>
+      <% else %>
+        <div class="empty-state-box">
+          <% if @task.failed? %>
+            <p>❌ Ocorreu um erro ao processar esta tarefa.</p>
+          <% else %>
+            <p>⏳ Aguardando processamento...</p>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <div style="margin-bottom: 30px;">
+      <span class="text-label">Histórico de Eventos</span>
+
+      <% if @notifications.any? %>
+        <table class="table-custom" style="margin-top: 5px; border: 1px solid #eee;">
+          <thead>
+            <tr>
+              <th style="background: #f9f9f9;">Data/Hora</th>
+              <th style="background: #f9f9f9;">Evento</th>
+              <th style="background: #f9f9f9;">Detalhes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @notifications.each do |notification| %>
+              <tr>
+                <td style="font-size: 0.85rem; color: #666;">
+                  <%= Time.parse(notification['created_at']).strftime("%d/%m/%Y %H:%M") rescue notification['created_at'] %>
+                </td>
+
+                <td>
+                  <%
+                    badge_color = case notification['event_type']
+                      when 'task_created' then '#cff4fc' # Azul claro
+                      when 'task_completed' then '#d1e7dd' # Verde
+                      when 'task_failed' then '#f8d7da' # Vermelho
+                      else '#eee'
+                    end
+                    text_color = case notification['event_type']
+                      when 'task_created' then '#055160'
+                      when 'task_completed' then '#0f5132'
+                      when 'task_failed' then '#721c24'
+                      else '#333'
+                    end
+                  %>
+                  <span class="badge" style="background-color: <%= badge_color %>; color: <%= text_color %>;">
+                    <%= notification['event_type'].humanize %>
+                  </span>
+                </td>
+
+                <td style="font-size: 0.85rem; color: #555;">
+                  <% if notification['data'].present? && notification['data'].is_a?(Hash) %>
+                     <% notification['data'].each do |k, v| %>
+                       <strong><%= k %>:</strong> <%= v.to_s.truncate(50) %><br>
+                     <% end %>
+                  <% else %>
+                    -
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <div class="empty-state-box" style="border-style: dotted;">
+          <p style="margin: 0; font-size: 0.9rem;">Nenhum evento registrado para esta tarefa ainda.</p>
+        </div>
+      <% end %>
+    </div>
+
+    <div style="border-top: 1px solid #eee; padding-top: 20px; display: flex; justify-content: flex-end;">
+      <%= link_to "Editar", edit_task_path(@task), class: "btn btn-secondary" %>
+
+      <%= link_to "Excluir Tarefa", task_path(@task),
+          class: "btn btn-danger",
+          data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja apagar permanentemente?" } %>
+    </div>
+
+  </div>
+</div>

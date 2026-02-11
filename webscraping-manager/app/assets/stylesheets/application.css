@@ -1,10 +1,239 @@
-/*
- * This is a manifest file that'll be compiled into application.css.
- *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
- */
+/* Sugestão de estilo para botões e containers da home */
+.home-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+
+  /* Força ocupar a tela inteira ignorando o layout pai */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  background-color: #f8f9fa;
+  z-index: 9999; /* Garante que fique por cima de tudo */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.home-card {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  display: inline-block;
+  max-width: 500px;
+  width: 90%;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.btn-primary:hover { background-color: #0b5ed7; }
+
+.btn-outline {
+  border: 2px solid #0d6efd;
+  color: #0d6efd;
+  margin-right: 10px;
+}
+
+.btn-outline:hover {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.btn-logout {
+  background-color: #dc3545;
+  color: white;
+  margin-top: 20px;
+}
+
+.home-container.layout-dashboard {
+  position: relative; /* Destrava o fixed */
+  height: auto;
+  min-height: 100vh;
+  align-items: flex-start; /* Alinha o card no topo, não no centro vertical */
+  padding-top: 50px;
+  padding-bottom: 50px;
+  overflow-y: auto;
+}
+
+/* Deixa o card mais largo para tabelas e alinha texto à esquerda */
+.home-card.card-wide {
+  max-width: 900px;
+  text-align: left;
+}
+
+/* Estilo padrão para Tabelas (limpo e reutilizável) */
+.table-custom {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.table-custom th {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 2px solid #eee;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.table-custom td {
+  padding: 12px;
+  border-bottom: 1px solid #f5f5f5;
+  color: #333;
+}
+
+.table-custom tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Utilitário para status (Badge) */
+.badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* --- Estilos de Formulário (Reutilizáveis) --- */
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left; /* Garante que os labels fiquem à esquerda dentro do card centralizado */
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box; /* Importante para o padding não estourar a largura */
+  transition: border-color 0.2s;
+}
+
+.form-input:focus {
+  border-color: #0d6efd;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+}
+
+/* Utilitário para largura total (para o botão salvar) */
+.w-100 {
+  width: 100%;
+}
+
+/* Caixa de Erro Padrão */
+.alert-error {
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  color: #991b1b;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.alert-error ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+/* --- Utilitários de Texto --- */
+.text-label {
+  font-size: 0.85rem;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.text-value {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #333;
+  margin: 0;
+}
+
+/* --- Layout de Grid Simples --- */
+.grid-2-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+/* --- Blocos de Código/Dados --- */
+.code-block {
+  background: #2d2d2d;
+  color: #f8f8f2;
+  padding: 15px;
+  border-radius: 6px;
+  margin-top: 5px;
+  overflow-x: auto;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.empty-state-box {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 6px;
+  border: 1px dashed #ccc;
+  margin-top: 5px;
+  text-align: center;
+  color: #666;
+}
+
+/* --- Botões Extras --- */
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+}
+.btn-danger:hover { background-color: #bb2d3b; }
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  margin-right: 10px;
+}
+.btn-secondary:hover { background-color: #5c636a; }
+
+/* Link simples (Voltar) */
+.link-muted {
+  color: #666;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.link-muted:hover { text-decoration: underline; }

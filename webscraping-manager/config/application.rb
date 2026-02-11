@@ -22,6 +22,8 @@ module WebscrapingManager
   class Application < Rails::Application
     config.load_defaults 8.0
 
+    config.time_zone = 'Brasilia'
+
     config.autoload_lib(ignore: %w[assets tasks])
 
     config.i18n.default_locale = :'pt-BR'

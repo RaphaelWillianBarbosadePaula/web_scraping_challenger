@@ -1,0 +1,61 @@
+<div class="home-container layout-dashboard">
+
+  <div class="home-card card-wide">
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h2 style="margin: 0; color: #333;">Minhas Tarefas</h2>
+      <%= link_to "+ Nova Tarefa", new_task_path, class: "btn btn-primary" %>
+    </div>
+
+    <% if @tasks.any? %>
+      <div style="overflow-x: auto;">
+        <table class="table-custom">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Título</th>
+              <th>Status</th>
+              <th>Link</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @tasks.each do |task| %>
+              <tr>
+                <td style="color: #999; font-weight: 500;">#<%= task.id %></td>
+                <td style="font-weight: 600;"><%= task.title %></td>
+                <td>
+                  <span class="badge" style="
+                    background-color: <%= task.pending? ? '#fff3cd' : (task.concluded? ? '#d1e7dd' : '#f8d7da') %>;
+                    color: <%= task.pending? ? '#856404' : (task.concluded? ? '#0f5132' : '#721c24') %>;">
+                    <%= task.status %>
+                  </span>
+                </td>
+                <td>
+                  <a href="<%= task.url %>" target="_blank" rel="noreferrer noopener" style="color: #0d6efd; text-decoration: none; font-size: 0.9rem;">Abrir Link ↗</a>
+                </td>
+                <td>
+                  <%= link_to "Ver", task_path(task), style: "color: #666; text-decoration: none; font-weight: 500; margin-right: 15px;" %>
+
+                  <%= link_to "Excluir", task_path(task),
+                      data: { turbo_method: :delete, turbo_confirm: "Tem certeza?" },
+                      style: "color: #dc3545; text-decoration: none; font-weight: 500;" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div style="text-align: center; padding: 60px 20px; color: #999;">
+        <h3 style="font-size: 2rem; margin-bottom: 10px;">📭</h3>
+        <p>Você ainda não tem tarefas cadastradas.</p>
+        <p style="font-size: 0.9rem;">Clique no botão acima para começar.</p>
+      </div>
+    <% end %>
+
+    <div style="margin-top: 30px; text-align: center; border-top: 1px solid #eee; padding-top: 20px;">
+      <%= link_to "← Voltar para Home", root_path, style: "color: #666; text-decoration: none; font-size: 0.9rem;" %>
+    </div>
+  </div>
+</div>

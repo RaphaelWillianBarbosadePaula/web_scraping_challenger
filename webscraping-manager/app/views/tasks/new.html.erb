@@ -1,0 +1,43 @@
+<div class="home-container">
+
+  <div class="home-card">
+    <div style="margin-bottom: 30px;">
+      <h2 style="margin: 0; color: #333;">Nova Tarefa</h2>
+      <p style="color: #666; margin-top: 5px;">Cole a URL do anúncio que deseja monitorar</p>
+    </div>
+
+    <%= form_with(model: @task, local: true) do |f| %>
+
+      <% if @task.errors.any? %>
+        <div class="alert-error">
+          <ul>
+            <% @task.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.label :title, "Título para Identificação", class: "form-label" %>
+        <%= f.text_field :title, placeholder: "Ex: BMW X1 Branca 2024", class: "form-input", autofocus: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :url, "Link do Anúncio (Webmotors)", class: "form-label" %>
+        <%= f.text_field :url, placeholder: "https://www.webmotors.com.br/...", class: "form-input" %>
+        <small style="display: block; margin-top: 5px; color: #999; font-size: 0.8rem; text-align: left;">
+          Certifique-se de copiar a URL completa do navegador.
+        </small>
+      </div>
+
+      <div style="margin-top: 30px;">
+        <%= f.submit "Agendar Scraping", class: "btn btn-primary w-100" %>
+      </div>
+
+      <div style="margin-top: 20px; text-align: center;">
+        <%= link_to "Cancelar e Voltar", tasks_path, style: "color: #666; text-decoration: none; font-size: 0.9rem;" %>
+      </div>
+    <% end %>
+  </div>
+</div>

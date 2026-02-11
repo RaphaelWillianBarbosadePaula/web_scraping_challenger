@@ -12,7 +12,8 @@
           <span style="margin-right: 5px;">✅</span> Sessão Ativa
         </p>
 
-        <%= link_to "Gerenciar Tarefas", "#", class: "btn btn-primary", style: "width: 100%; box-sizing: border-box;" %>
+        <%= link_to "Gerenciar Tarefas", tasks_path, class: "btn btn-primary", style: "width: 100%; box-sizing: border-box;" %>
+        <%= link_to "Ver Notificações", notifications_path, class: "btn btn-outline", style: "width: 100%; box-sizing: border-box; text-decoration: none; display: block; text-align: center; margin-top: 10px;" %>
 
         <div style="margin-top: 15px;">
           <%= button_to "Sair do Sistema", logout_path,

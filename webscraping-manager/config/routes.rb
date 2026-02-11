@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   root to: 'home#index'
 
+  resources :tasks, only: [:index, :new, :create, :edit, :update, :show, :destroy]
+
+  resources :notifications, only: [:index]
+
   # Sessão (Login/Logout)
   get    '/login',  to: 'sessions#new',     as: :login
   post   '/login',  to: 'sessions#create'
