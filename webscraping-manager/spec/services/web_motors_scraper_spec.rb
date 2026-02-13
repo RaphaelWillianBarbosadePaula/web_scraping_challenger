@@ -20,7 +20,7 @@ RSpec.describe WebMotorsScraper do
   end
 
   describe '#scrape' do
-    context 'quando a página carrega o JSON oficial (__NEXT_DATA__)' do
+    context 'when the page is available' do
       let(:json_data) do
         {
           props: {
@@ -50,7 +50,7 @@ RSpec.describe WebMotorsScraper do
         allow(driver_double).to receive(:page_source).and_return(html_with_json)
       end
 
-      it 'extrai os dados prioritariamente via JSON' do
+      it 'extracts data primarily via JSON.' do
         result = subject.scrape
 
         expect(result[:brand]).to eq('Honda')
@@ -59,13 +59,13 @@ RSpec.describe WebMotorsScraper do
         expect(result[:note]).to eq('Via JSON Oficial')
       end
 
-      it 'fecha o driver ao final' do
+      it 'closes the driver when done' do
         subject.scrape
         expect(driver_double).to have_received(:quit)
       end
     end
 
-    context 'quando o JSON falha, mas o HTML visual (CSS) funciona' do
+    context 'when json fails to parse' do
       let(:html_only_css) do
         <<-HTML
           <html>
@@ -85,7 +85,7 @@ RSpec.describe WebMotorsScraper do
         allow(driver_double).to receive(:page_source).and_return(html_only_css)
       end
 
-      it 'extrai os dados via seletores CSS' do
+      it 'extracts data primarily via CSS' do
         result = subject.scrape
 
         expect(result[:brand]).to eq('Honda')
@@ -96,7 +96,7 @@ RSpec.describe WebMotorsScraper do
       end
     end
 
-    context 'quando ocorre um bloqueio do PerimeterX (Erro 403)' do
+    context 'when a PerimeterX lockout occurs (Error 403)' do
       let(:html_blocked) do
         <<-HTML
           <html>
@@ -112,13 +112,13 @@ RSpec.describe WebMotorsScraper do
         allow(driver_double).to receive(:page_source).and_return(html_blocked)
       end
 
-      it 'levanta uma exceção específica de bloqueio' do
+      it 'raises a specific blocking exception' do
         expect {
           subject.scrape
         }.to raise_error(RuntimeError, /BLOQUEIO CRÍTICO/)
       end
 
-      it 'ainda tenta fechar o driver mesmo com erro' do
+      it 'still tries to close the driver even with the error.' do
         begin
           subject.scrape
         rescue RuntimeError
@@ -127,12 +127,12 @@ RSpec.describe WebMotorsScraper do
       end
     end
 
-    context 'quando o driver do Selenium falha (ex: Timeout ou Crash)' do
+    context 'when the Selenium driver fails (e.g., timeout or crash)' do
       before do
         allow(navigation_double).to receive(:to).and_raise(StandardError, 'Net::ReadTimeout')
       end
 
-      it 'loga o erro e relança a exceção' do
+      it 'logs the error and rethrows' do
         expect(Rails.logger).to receive(:error).with(/Erro Scraper: Net::ReadTimeout/)
 
         expect {
@@ -140,7 +140,7 @@ RSpec.describe WebMotorsScraper do
         }.to raise_error(StandardError, 'Net::ReadTimeout')
       end
 
-      it 'garante o fechamento do driver no ensure' do
+      it 'ensures the driver closes' do
         begin
           subject.scrape
         rescue StandardError
