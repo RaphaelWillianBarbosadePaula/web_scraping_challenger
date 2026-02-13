@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   root to: 'home#index'
 
@@ -13,4 +15,7 @@ Rails.application.routes.draw do
   # Cadastro (Registration)
   get  '/register', to: 'user_registrations#new',    as: :register
   post '/register', to: 'user_registrations#create'
+
+  # Painel do Sidekiq
+  mount Sidekiq::Web => '/sidekiq'
 end

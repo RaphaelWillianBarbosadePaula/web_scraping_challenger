@@ -24,6 +24,8 @@ module WebscrapingManager
 
     config.time_zone = 'Brasilia'
 
+    config.active_job.queue_adapter = :sidekiq
+
     config.autoload_lib(ignore: %w[assets tasks])
 
     config.i18n.default_locale = :'pt-BR'
