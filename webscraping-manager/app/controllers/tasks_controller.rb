@@ -14,10 +14,14 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     @task.user_id = current_user.id
+    @task.status = 'pending'
 
     if @task.save
       NotificationClient.notify(@task.id, @task.user_id, 'task_created', { url: @task.url })
-      redirect_to tasks_path, notice: 'Tarefa criada!'
+
+      ScrapingJob.perform_later(@task.id)
+
+      redirect_to tasks_path, notice: 'Tarefa criada! O processamento iniciará em instantes.'
     else
       render :new, status: :unprocessable_entity
     end
