@@ -16,6 +16,17 @@ services:
     ports:
       - "6379:6379"
 
+  chrome:
+    image: selenium/standalone-chrome:latest
+    ports:
+      - "4444:4444"
+    shm_size: "2gb"
+    entrypoint: >
+      bash -c "
+      echo 'Aplicando patch no ChromeDriver...' &&
+      sudo sed -i 's/cdc_/dog_/g' /usr/bin/chromedriver &&
+      /opt/bin/entry_point.sh"
+
   # --- Microsserviços ---
 
   # 1. Autenticação (Porta 3001)
@@ -76,10 +87,12 @@ services:
       DB_PASSWORD: password
       REDIS_URL: redis://redis:6379/0
       NOTIFICATION_SERVICE_URL: http://notification-service:3002
+      SELENIUM_URL: http://chrome:4444/wd/hub
     depends_on:
       - db
       - redis
       - webscraping-manager
+      - chrome
 
 volumes:
   postgres_data:
